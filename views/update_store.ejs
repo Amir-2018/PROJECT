@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+    <link rel="stylesheet" href="/store/style.css">
+    <title>Document</title>
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="sidebar">
+           <div class="button">
+            <div onclick="fn()"><i  class="fa fa-bars" aria-hidden="true"></i></div>
+            <div ></div>
+            <div><input type="button" class="btn" value="X" onclick="fn()"></div>
+           </div>
+               
+            <ul>
+                
+
+                <li id="titte-liste">
+                    <a href="#"><i class="fa fa-area-chart" aria-hidden="true"></i></a>
+                    <a href="#" class="text"><span class="insight">QLogistics</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-user" aria-hidden="true"></i></a>
+                    <a href="#" class="text"><span>Acceuil</span></a>
+                </li>
+                <li>
+                    <a href="/get_dash_data"><i class="fa fa-calculator" aria-hidden="true"></i></i></a>
+                    <a href="/get_dash_data" class="text"><span>Caisses</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+                    <a href="#" class="text"><span>Visualisation</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-history" style="font-size:18px"></i></a>
+                    <a href="#" class="text"><span>Historique</span></a>
+                </li>
+                <li  class="text-caisse">
+                    <a href="/get_store_Page"><i class="fa fa-fw fa-home"></i></a>
+                    <a href="/get_store_Page" class="text"><span>stores</span></a>
+                </li>
+                <li>
+                    <a href="/get_inventory_Page"><i class="fa fa-cog" style="font-size:18px"></i></a>
+                    <a href="/get_inventory_Page" class="text" i><span>Inventory</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-building-o" aria-hidden="true"></i></a>
+                    <a href="#" class="text"><span>Établissement</span></a>
+                </li>
+                <li>
+                    <a href="/get_caissier"><i class="fa fa-fw fa-home"></i></a>
+                    <a href="/get_caissier" class="text"><span>Caissier</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+                    <a href="#" class="text"><span>Log out</span></a>
+                </li>
+                
+
+            </ul>
+            
+        </div>
+        <div class="left-side">
+            <div class="nav">
+            <div class="boxnav" id="boxnav"><p class="update">Update - Admins</p> </div>
+            <div class="boxnav box-nav">
+                <table class="tbl-nav">
+                    
+                </table>
+            </div>
+            <div class="boxnav"><i class="fa fa-bell" aria-hidden="true"></i>
+            </div>
+            <div class="boxnav" id="amir">
+                <span class="amir">Amir</span>
+                
+                <span class="amir">Maalaoui </span>
+                
+            </div>
+            <div class="boxnav">
+                <img src="/store/cv.jpg" id="img" alt="cv.jpg">
+            </div>
+        </div>
+            <div class="page-content">
+                <div class="big-box">
+                    <form method="POST" action="/update_store/<%=store._id%>">
+                        <table class="table-manage">
+                            <tr>
+                                <td><input type="text" name="name" placeholder="Nom" value="<%=store.name %>"></td>        
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="contact" placeholder="Prenom" value="<%=store.contact %>"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="store_owner" placeholder="Store_Owner" value="<%=store.store_owner %>"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" name="position" placeholder="Telephone" value="<%=store.position %>"></td>
+                            </tr>
+                           
+                            <tr>
+                                <td><input type="submit" value="Update"></td>
+                            </tr>
+                        </table>                
+                        
+                    </form>
+                </div>
+
+        </div>
+        <div class="pagination">
+            <a href="#">&laquo;</a>
+            <a href="#">1</a>
+            <a class="active" href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#">6</a>
+            <a href="#">&raquo;</a>
+          </div>
+    </div>
+    
+    </div>
+
+
+
+<script src="/store/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+    <link rel="stylesheet" href="/store/style.css">
+    <style>
+        .store-owners{
+            font-size: 15px;
+        }
+        .btn-susp{
+            transition: 0.1s;
+        }
+        .btn-susp:hover{
+            transform: scale(1.1);
+        }
+        .delete-btn{
+            background-color: #0B7C86;
+            transition: 0.1s;
+        }
+        .delete-btn:hover{
+            transform: scale(1.1);
+        }
+        tr td input[type="text"]{
+            padding-left: 15px  ;
+            font-size: 15px;
+            color: gray;
+        }
+        .cancel{
+            transition: 0.1s;
+        }
+        .cancel:hover{
+            transform: scale(1.1);
+        }
+    </style>
+    <title>Document</title>
+
+</head>
+<body>
+     <div class="box-del none-display">
+        <div class="add-store">Add Caissiers</div>
+        <div class="new-taw">
+            <table class="place-tab">
+                <form method="POST" action="/addCaissier">
+                    <tr><td><span>Nom</span></td><td><span>Prenom</span></td></tr>
+                    <tr><td><input type="text" name="name" id=""></td><td><input type="text" name="lastname"></td></tr>
+                    <tr><td><span>email</span></td><td><span>telephone</span></td></tr>
+                    <tr><td><input type="text" name="email" id=""></td><td><input type="text" name="tel"></td></tr>
+                    <tr><td><span>age</span></td><td><span>mot-de-passe</span></td></tr>
+                    <tr><td><input type="text" name="age" id=""></td><td><input type="password" name="password"></td></tr> 
+                
+            </table>    
+        </div>
+       <div class="tow">
+        <table >
+            <tr><td class="two-tab"><button type="reset" class="cancel" onclick="deleteB()">Cancel</button><button type="submit" onclick="deleteB()"  class="cancel addc">Add</button></td></tr>
+        </table>
+                </form>
+       </div>
+     </div>
+    <div class="container">
+        <div class="sidebar">
+           <div class="button">
+            <div onclick="fn()"><i  class="fa fa-bars" aria-hidden="true"></i></div>
+            <div ></div>
+            <div><input type="button" class="btn" value="X" onclick="fn()"></div>
+           </div>
+               
+            <ul>
+                
+
+                <li id="titte-liste">
+                    <a href="#"><i class="fa fa-area-chart" aria-hidden="true"></i></a>
+                    <a href="#" class="text"><span class="insight">QLogistics</span></a>
+                </li>
+                
+
+                
+                <li>
+                    <a href="#"><i class="fa fa-user" aria-hidden="true"></i></a>
+                    <a href="#" class="text"><span>Acceuil</span></a>
+                </li>
+                <li>
+                    <a href="/get_dash_data"><i class="fa fa-calculator" aria-hidden="true"></i></i></a>
+                    <a href="/get_dash_data" class="text"><span>Caisses</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+                    <a href="#" class="text"><span>Visualisation</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-history" style="font-size:18px"></i></a>
+                    <a href="#" class="text"><span>Historique</span></a>
+                </li>
+                <li>
+                    <a href="/get_store_Page"><i class="fa fa-fw fa-home"></i></a>
+                    <a href="/get_store_Page" class="text"><span>stores</span></a>
+                </li>
+                <li id="inventory">
+                    <a href="/get_inventory_Page"><i class="fa fa-fw fa-home"></i></a>
+                    <a href="/get_inventory_Page" class="text"><span>Inventory</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-building-o" aria-hidden="true"></i></a>
+                    <a href="#" class="text"><span>Établissement</span></a>
+                </li>
+                <li class="text-caisse">
+                    <a href="/get_caissier"><i class="fa fa-fw fa-home"></i></a>
+                    <a href="/get_caissier" class="text"><span>Caissiers</span></a>
+                </li>
+
+
+                <li>
+                    <a href="/logout-super"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+                    <a href="/logout-super" class="text"><span>Log out</span></a>
+                </li>
+
+
+
+
+            </ul>
+            
+        </div>
+        <div class="left-side">
+            <div class="nav">
+            <div class="boxnav" id="boxnav"><span class="store-owners">Caissiers</span></div>
+            <div class="boxnav box-nav">
+                <table class="tbl-nav">
+                    <tr><td><input type="text" class="text-now" placeholder="Search..."></td><td><button  class="delete-btn" onclick="blockAff()"></i>Add</button></td></tr>
+                </table>
+            </div>
+            <div class="boxnav"><i class="fa fa-bell" aria-hidden="true"></i>
+            </div>
+            <div class="boxnav" id="amir">
+                <span class="amir">Amir</span>
+                
+                <span class="amir">Maalaoui </span>
+                
+            </div>
+            <div class="boxnav">
+                <img src="store/cv.jpg" id="img" alt="cv.jpg">
+            </div>
+        </div>
+            <div class="page-content">
+                <div class="big-box">
+
+                    <div class="childbox childbox2">
+
+                                <table>
+                                        <tr>
+                                            <th><i class="fa fa-circle-thin" aria-hidden="true"></i></th>
+                                            <th><span>Nom</span></th>
+                                            <th><span>prenom</span></th>
+                                            <th><span>age</span></th>
+                                            <th><span>email</span></th>
+                                            <th><span>telephone</span></th>
+                                            <th class="stretch"><span ></span></th>
+                                            <td><span></span></td>
+                                            <th><span></span></th> 
+                                            <th><span>Actions</span></th>    
+                                        </tr>
+                               
+                                       
+                                            <% for(let i=0;i<caissiers.length;i++) {%>
+                                                <tr class="border-tr">
+                                                    <td><i class="fa fa-circle-thin" aria-hidden="true"></i></td>
+                                                    <td><span><%=caissiers[i].name %></span></td>
+                                                    <td><span><%=caissiers[i].lastname %></span></td>
+                                                    <td><span><%=caissiers[i].age %></span></td>
+                                                    <td><span><%=caissiers[i].email %></span></td>
+                                                    <td><span><%=caissiers[i].telephone %></span></td>
+                                                    <td><span></span></td>
+                                                    <td><span></span></td>
+                                                    <td class="stretch"><span></span></td>
+                                                
+                                                    <td><span><div class="img-icon">
+                                                        <div class="icone icone1"><a href="/update_caissiers/<%=caissiers[i]._id%>"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
+                                                        <div class="icone icone2"><a href="/delete_caissiers/<%=caissiers[i]._id%>"><i class="fa fa-trash" aria-hidden="true"></i>
+                                                        </a></div>
+                                                    </div></td>
+                                                </tr>
+                                            <% } %>
+                             
+                                    </table>
+
+                    </div>
+
+                </div>
+
+        </div>
+        <div class="pagination">
+            <a href="#">&laquo;</a>
+            <a href="#">1</a>
+            <a class="active" href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#">6</a>
+            <a href="#">&raquo;</a>
+          </div>
+    </div>
+    
+    </div>
+
+
+
+<script src="/store/script.js"></script>
+</body>
+</html>

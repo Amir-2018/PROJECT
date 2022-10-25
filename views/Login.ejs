@@ -1,0 +1,522 @@
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.6/ScrollMagic.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <style>
+        * {
+            font-family: Poppins;
+        }
+
+        body {
+
+            padding: 0;
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: gray;
+            background-image: url(./bg.png);
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+
+        }
+
+        .all {
+
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            display: flex;
+            flex-direction: column;
+            width: 60vw;
+            height: fit-content;
+            background-color: rgba(255, 255, 255, 0.551);
+            padding: 30px;
+            /*backdrop-filter: blur(0px);*/
+
+        }
+
+
+        .sign {
+            background-color: none;
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+
+        .form {
+            background-color: none;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+
+        #logo {
+            background-color: none;
+            height: 54.15px;
+            width: 244.68px;
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-size: contain;
+            background-image: url(./Logo.png);
+            background-repeat: no-repeat;
+            position: relative;
+            margin-bottom: 20px;
+
+        }
+
+
+        input[type=text],
+        [type=email],
+        [type=submit],
+        [type=date],
+        [type=password] {
+
+            width: 100%;
+            padding: 15px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            font-style: normal;
+            font-weight: normal;
+            margin: 1px;
+            font-size: 12px;
+            letter-spacing: 0.02em;
+            line-height: 18px;
+            border: #000000;
+            background: #ffffff;
+            box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
+            box-sizing: border-box;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+
+
+        }
+
+
+
+        input[type=email] {
+            background: url(./assets/sms.svg) no-repeat scroll 7px 15px;
+            padding-left: 30px;
+            background-color: white;
+
+        }
+
+
+
+
+        input[type=password] {
+            background: url(./assets/lock.svg) no-repeat scroll 7px 15px;
+            padding-left: 30px;
+            background-color: white;
+        }
+
+
+
+
+        .line {
+            width: 100%;
+            height: fit-content;
+            padding-top: 10px;
+            background-color: none;
+            display: flex;
+            flex-direction: row;
+        }
+
+
+
+        .column {
+            width: 45%;
+            height: 100%;
+            background-color: none;
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-left: 2.5%;
+
+        }
+
+
+
+
+        #Forgot {
+            font-family: Poppins;
+
+            font-style: normal;
+
+            font-weight: normal;
+
+            font-size: 14px;
+
+            line-height: 18px;
+            text-decoration: none;
+            color: #39cdda;
+        }
+
+
+
+        #submit1 {
+            background-color: #0B7C86;
+            border-radius: 20px;
+            width: 140px;
+            height: fit-content !important;
+            border-color: none;
+            border-width: 0;
+
+            font-family: Poppins;
+            font-style: normal;
+
+            font-style: normal;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 21px;
+
+            color: #FFFFFF;
+
+
+        }
+
+
+        .line1 {
+            height: fit-content;
+            display: flex;
+            flex-direction: row;
+            margin-top: 10px;
+            margin-left: 2.5%;
+        }
+
+        .span {
+            padding-left: 10px;
+            font-weight: bold;
+        }
+
+        .forgottxt {
+            float: left;
+            
+        }
+
+        #header {
+            font-size: 30px;
+            margin-left: 2.5%;
+        }
+
+        #header2 {
+            margin-left: 2.5%;
+        }
+
+        #fname {
+            background: url(./user.svg) no-repeat scroll 7px 15px;
+            padding-left: 30px;
+            background-color: white;
+        }
+
+        #fnumber {
+            background: url(./phonenumber.svg) no-repeat scroll 7px 15px;
+            padding-left: 30px;
+            background-color: white;
+        }
+
+
+
+
+
+
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .bg-image {
+            /* The image used */
+            background-image: url("./assets/bg.png");
+
+            /* Add the blur effect 
+            filter: blur(8px);
+            -webkit-filter: blur(8px);*/
+
+            /* Full height */
+            height: 100%;
+
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+
+        /* Position text in the middle of the page/image */
+        .bg-text {
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgb(0 0 0 / 23%);
+            /* Black w/opacity/see-through */
+            color: white;
+            font-weight: bold;
+
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -55%) scale(0.8);
+            z-index: 2;
+            width: 50%;
+            padding: 20px;
+            text-align: left;
+            backdrop-filter: blur(5px);
+        }
+
+        #submit1 {
+            background-color: #048B95;
+            border-radius: 24px;
+            margin-left: 0%;
+            width: 160px;
+            height: 48px;
+            margin-top: 20px;
+
+            font-family: Poppins;
+
+            font-style: normal;
+
+            font-weight: 500;
+
+            font-size: 20px;
+
+            line-height: 21px;
+            border: none;
+
+            color: #FFFFFF;
+        }
+
+        #logo {
+            background-color: none;
+            height: 54.15px;
+            width: 244.68px;
+            top: 2vh;
+            left: 50%;
+            transform: translateX(-50%);
+            background-size: contain;
+            background-image: url(Logo.png);
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        #checkbox {
+            height: 20px;
+        }
+
+        section{
+	position:relative;
+	height:100vh;
+}
+
+
+
+
+section:nth-child(odd){
+	 background-color: #2a95bf;
+	color:white;
+	 
+
+}
+
+
+
+    </style>
+</head>
+
+<body>
+
+
+
+
+
+    <div class="bg-image">
+        <section id="particles-js">
+          
+    </section>
+  
+    </div>
+
+
+    <div class="bg-text">
+
+     
+
+    <div id="logo">
+
+    </div>
+
+    <div class="form">
+
+        <form id="form" action="/loginAdmin" method="POST">
+            <div class="line">
+                <div class="column">
+                    <span class="span">Email</span>
+                    <input type="email" id="fname" name="email" required>
+                </div>
+
+
+                <div class="column">
+                    <span class="span">Password</span>
+                    <input type="password" id="password" name="password" required>
+                </div>
+            </div>
+
+
+
+
+            <div class="line1">
+
+            </div>
+            <div class="line1">
+                <div class="forgottxt">
+                    <div id="check">
+
+                       <!-- <a href="#" for="am" id="Forgot">F,borgot Password</a>
+                        <p>A new user? <a href="/sign_up" style="color:white ;" ><b>Create an account</b></p>-->
+
+
+                    </div>
+                </div>
+
+            </div>
+            <div id="submit">
+                <input type="submit" id="submit1" value="Login">
+            </div>
+        </form>
+
+    </div>
+
+    </div>
+
+        </div>
+    </div>
+    <script>
+        particlesJS("particles-js", {
+  "particles": {
+    "number": {
+      "value": 290,
+      "density": {
+        "enable": true,
+        "value_area": 800
+      }
+    },
+    "color": {
+      "value": "#ffffff"
+    },
+    "shape": {
+      "type": "triangle",
+      "stroke": {
+        "width": 0,
+        "color": "#000000"
+      },
+      "polygon": {
+        "nb_sides": 10
+      },
+      "image": {
+        "src": "img/github.svg",
+        "width": 100,
+        "height": 100
+      }
+    },
+    "opacity": {
+      "value": 0.5,
+      "random": false,
+      "anim": {
+        "enable": false,
+        "speed": 1,
+        "opacity_min": 0.1,
+        "sync": false
+      }
+    },
+    "size": {
+      "value": 3,
+      "random": true,
+      "anim": {
+        "enable": false,
+        "speed": 40,
+        "size_min": 0.1,
+        "sync": false
+      }
+    },
+    "line_linked": {
+      "enable": true,
+      "distance": 150,
+      "color": "#ffffff",
+      "opacity": 0.4,
+      "width": 1
+    },
+    "move": {
+      "enable": true,
+      "speed": 6,
+      "direction": "none",
+      "random": true,
+      "straight": false,
+      "out_mode": "out",
+      "bounce": true,
+      "attract": {
+        "enable": false,
+        "rotateX": 600,
+        "rotateY": 1200
+      }
+    }
+  },
+  "interactivity": {
+    "detect_on": "window",
+    "events": {
+      "onhover": {
+        "enable": true,
+        "mode": "repulse"
+      },
+      "onclick": {
+        "enable": true,
+        "mode": "push"
+      },
+      "resize": true
+    },
+    "modes": {
+      "grab": {
+        "distance": 140,
+        "line_linked": {
+          "opacity": 1
+        }
+      },
+      "bubble": {
+        "distance": 400,
+        "size": 100,
+        "duration": 2,
+        "opacity": 8,
+        "speed": 3
+      },
+      "repulse": {
+        "distance": 100,
+        "duration": 0.4
+      },
+      "push": {
+        "particles_nb": 4
+      },
+      "remove": {
+        "particles_nb": 2
+      }
+    }
+  },
+  "retina_detect": true
+});
+
+
+
+    </script>
+
