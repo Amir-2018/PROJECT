@@ -26,6 +26,9 @@ const userSchema = new mongoose.Schema({
 
   password: {
     type: String,
+  },
+  id_store : {
+    type:String
   }
 
 

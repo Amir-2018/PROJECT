@@ -10,6 +10,16 @@ const userSchema = new mongoose.Schema({
 
   Total: {
     type: String,
+  },
+  date : {
+    type : String
+  },
+  id_caisse:{
+    type : String,
+  },
+
+  id_caissier:{
+    type:String
   }
 
 

@@ -5,6 +5,9 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
   },
+  matricule : {
+    type : String
+  },
   contact: {
     type: String,
   },
@@ -20,8 +23,9 @@ const userSchema = new mongoose.Schema({
   },
  id_admin : {
   type : String
- }
-
+ },
+ id_caisse : [String],
+ id_caisseier : [String]
 });
 
 const Store = mongoose.model('store', userSchema);

@@ -13,7 +13,27 @@
 
 </head>
 <body>
-
+     <div class="box-del none-display">
+        <div class="add-store">Add New Store</div>
+        <div class="new-taw">
+            <table class="place-tab">
+                <form method="POST" action="/createAdmin">
+                    <tr><td><span>Nom</span></td><td><span>Prenom</span></td></tr>
+                    <tr><td><input type="text" name="name" id=""></td><td><input type="text" name="lastname"></td></tr>
+                    <tr><td><span>email</span></td><td><span>telephone</span></td></tr>
+                    <tr><td><input type="text" name="email" id=""></td><td><input type="text" name="tel"></td></tr>
+                    <tr><td><span>age</span></td><td><span>mot-de-passe</span></td></tr>
+                    <tr><td><input type="text" name="age" id=""></td><td><input type="password" name="password"></td></tr> 
+                
+            </table>    
+        </div>
+       <div class="tow">
+        <table >
+            <tr><td class="two-tab"><button type="reset" class="cancel" onclick="deleteB()">Cancel</button><button type="submit" onclick="deleteB()"  class="cancel addc">Add</button></td></tr>
+        </table>
+                </form>
+       </div>
+     </div>
     <div class="container">
         <div class="sidebar">
            <div class="button">
@@ -29,6 +49,7 @@
                     <a href="#"><i class="fa fa-area-chart" aria-hidden="true"></i></a>
                     <a href="#" class="text"><span class="insight">QLogistics</span></a>
                 </li>
+                
                 <li>
                     <a href="#"><i class="fa fa-user" aria-hidden="true"></i></a>
                     <a href="#" class="text"><span>Acceuil</span></a>
@@ -37,12 +58,12 @@
                     <a href="/get_dash_data"><i class="fa fa-calculator" aria-hidden="true"></i></i></a>
                     <a href="/get_dash_data" class="text"><span>Caisses</span></a>
                 </li>
-
-                <li  class="text-caisse">
+           
+                <li>
                     <a href="/get_store_Page"><i class="fa fa-fw fa-home"></i></a>
                     <a href="/get_store_Page" class="text"><span>stores</span></a>
                 </li>
-                <li>
+                <li  class="text-caisse">
                     <a href="/get_inventory_Page"><i class="fa fa-cog" style="font-size:18px"></i></a>
                     <a href="/get_inventory_Page" class="text" i><span>Inventory</span></a>
                 </li>
@@ -57,45 +78,46 @@
                 </li>
                 
 
+
             </ul>
             
         </div>
         <div class="left-side">
             <div class="nav">
-            <div class="boxnav" id="boxnav"><p class="update">Update - Admins</p> </div>
+            <div class="boxnav" id="boxnav"><span class="update"> update-caissier</span></div>
             <div class="boxnav box-nav">
                 <table class="tbl-nav">
-                    
                 </table>
             </div>
             <div class="boxnav"><i class="fa fa-bell" aria-hidden="true"></i>
             </div>
             <div class="boxnav" id="amir">
-                <span class="amir">Amir</span>
+                <span class="amir"><%=admin.name%></span>
                 
-                <span class="amir">Maalaoui </span>
+                <span class="amir"><%=admin.lastname%></span>
                 
             </div>
             <div class="boxnav">
-                <img src="/store/cv.jpg" id="img" alt="cv.jpg">
+                <img src="/<%=admin.img.data%>" id="img" alt="cv.jpg">
             </div>
         </div>
             <div class="page-content">
                 <div class="big-box">
-                    <form method="POST" action="/update_store/<%=store._id%>">
+                    <form method="POST" action="/post_update_caissiers/<%=caissier._id%>">
                         <table class="table-manage">
                             <tr>
-                                <td><input type="text" name="name" placeholder="Nom" value="<%=store.name %>"></td>        
+                                <td><input type="text" name="name" placeholder="Name" value="<%=caissier.name %>"></td>        
                             </tr>
                             <tr>
-                                <td><input type="text" name="contact" placeholder="Prenom" value="<%=store.contact %>"></td>
+                                <td><input type="text" name="lastname" placeholder="Lastname" value="<%=caissier.lastname %>"></td>
                             </tr>
                             <tr>
-                                <td><input type="text" name="store_owner" placeholder="Store_Owner" value="<%=store.store_owner %>"></td>
+                                <td><input type="text" name="email" placeholder="Email" value="<%=caissier.email %> "></td>
                             </tr>
                             <tr>
-                                <td><input type="text" name="position" placeholder="Telephone" value="<%=store.position %>"></td>
+                                <td><input type="text" name="age" placeholder="Age" value="<%=caissier.age %> "></td>
                             </tr>
+                         
                            
                             <tr>
                                 <td><input type="submit" value="Update"></td>

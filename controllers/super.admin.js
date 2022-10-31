@@ -1,10 +1,12 @@
 const Super_Admin = require("../models/Super_Admin");
 const Admin = require("../models/Admin");
+const Prodcut = require("../models/Product");
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer')
-// handle errors
-
-
+const fs = require('fs');
+const path = require('path');
+// Dependencie to upload photo 
+const multer = require('multer');
 // create json web token
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id) => {
@@ -80,30 +82,37 @@ const createToken = (id) => {
 
   Super_Admin.findOne({email:req.body.email})
   .then(super_admin =>{
-    if(super_admin){
+    console.log(super_admin)
+    if(super_admin!=null){
       const auth =  bcrypt.compare(req.body.password, super_admin.password);
       auth.then(result =>{
         if(result){
             const token = createToken(super_admin._id);
             res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
               Admin.find({}).then(admins =>{
-                res.render('manage_admins',{admins:admins})
+                res.render('manage_admins',{admins:admins,super_admin : super_admin})
                 console.log(admins)
             })
         }else{
           Admin.findOne({email:req.body.email})
           .then(admin =>{
-            if(admin ){
+            if(admin !=null){
               const authP =  bcrypt.compare(req.body.password, admin.password);
               authP.then(resultP =>{
                 if(resultP){
-                  const token = createToken(dmin._id);
+                  const token = createToken(admin._id); 
                   res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-                  res.redirect('get_store_Page');
+                  
+                  res.redirect(url.format({
+                    pathname:"/get_store_Page",
+                    query: {
+                       admin : admin
+                     }
+                  }))
                 }
               })
             }else{
-              res.send('Cannot found the email in table admin')
+              res.render('Login-super')
             }
           })
         }
@@ -121,7 +130,7 @@ const createToken = (id) => {
                 }
               })
             }else{
-              res.send('Cannot found the email in table admin')
+              res.render('Login-super')
             }
           })
     }
@@ -168,6 +177,24 @@ module.exports.testKey = (req, res) => {
 
 }
 
+const Storage = multer.diskStorage({
+  destination: './public',
+  filename: function (req, file, cb) {
+  //originalename Name of the file on the user’s computer
+    cb(null, file.originalname );
+  }
+})
+//   const uploadFilter = function(req, file, cb) {
+  // filter rules here
+// }
+const upload = multer({
+  storage : Storage,
+  limits: {
+      fileSize: 5000000,
+    },
+  //   fileFilter: uploadFilter
+}).single('image') 
+
 module.exports.createAdmin = (req, res) => {
   // Test if super admin is authenticated 
   const token = req.cookies.jwt;
@@ -179,64 +206,63 @@ module.exports.createAdmin = (req, res) => {
           message : "You are not the specified user"
         })
       } else {
-        let super_admin = await Super_Admin.findById(decodedToken.id);
-        console.log(super_admin)
-        try {
-          // Test if email is already exist
-          Admin.findOne({email:req.body.email}) 
-          .then(find_email =>{
-            if(find_email){
-              res.status(403).json({
-                message : 'Admin is already exist ' 
-              })
-            }else{
-              // email does not exist 
-              const admin = new Admin({
-                name : req.body.name,
-                lastname : req.body.lastname,
-                sexe : req.body.sexe,
-                age : req.body.age,
-                email : req.body.email,
-                telephone : req.body.tel,
-                pays : req.body.pays,
-                email : req.body.email,
-                password : req.body.password            
-                })
-                admin
-                .save()
-                .then(result =>{
+        // Test image size to not depass 5 M
+        upload(req,res,(err)=>{
+          if(err){
+              if(err.code == 'LIMIT_FILE_SIZE'){
+                  res.status(500).json({
+                      message : "Image size is over than 5MB"
+                  })   
+              }  
+          }
+          // image is less than 5M then now upload is unable 
+          else{
+              const str = req.file.originalname;
+              console.log(str)
+              const slug = str.split('.').pop();
+              if(slug =='jpg' || slug =='png' || slug =='jpeg' || slug =='gif'|| slug =='bmp' ){
+                // create user object 
+                  const admin = new Admin({
+                    name : req.body.name,
+                    lastname : req.body.lastname,
+                    email : req.body.email,
+                    telephone : req.body.tel,
+                    password : req.body.password, 
+                    img:{
+                      data : req.file.filename,
+                      contentType : 'image/png'
+                    }
+      
+                    })
                     
-                      const token = createToken(admin._id);
-                      res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-                      Admin.find().then(admins=>{
-                        res.render('manage_admins',{admins : admins}) 
-                      }).catch(err =>{
-                        res.status(500).json({
-                          message : 'Some Execption occured '+err
-                        });
-                      })
-                                 
-                })
-                // Exception server
-                .catch(err =>{
-                        res.status(500).json({
-                          message : 'Some Execption occured '+err
-                        });
-                })
-            }
-          })
-             // Exception server
-        }catch(err) {
-              res.status(500).json({
-                message : 'Exception occured with registration form module'+err
-              });
-        }
+                  admin.save().then(result =>{
+                      if(result){
+                          Admin.find({}).then(admins=>{
+                            res.render('manage_admins',{admins:admins})
+                          })
+                         
+                      }else{
+                          res.status(500).json({
+                              message : "Image not Uploaded ... "
+                          })
+                      }
+                
+                  }).catch(err =>{
+                      console.log(err)
+                  })
+              } // File is not an image
+              else{
+                  res.status(500).json({
+                      message : 'Only image are accepted '
+                  })
+              }
+            
+          }// image is more than 5M
+      })
       }
     })
   }else{
-    res.status(400).json({
-      message : "You are not authenticated"
-    })
+    res.render('Login-super')
   }
 
 }
@@ -320,14 +346,15 @@ module.exports.update_admins = (req, res) => {
 
 const Inventaire = require("../models/Inventaire");
 const Store = require("../models/Store");
-module.exports.del_inv = (req, res) => {
-  Inventaire.remove().then(res=>{
-    Store.remove().then(str=>{
-    console.log('Deleted all')
-  })
-  })
+ module.exports.del_inv = (req, res) => {
+  // Inventaire.remove().then(res=>{
+  //   Store.remove().then(str=>{
+  //   console.log('Deleted all')
+  // })
+  // })
+  Prodcut.remove().then(res=>{ console.log('deleted all')  })
+ }
 
-}
 module.exports.get_login_super_page = (req, res) => {
   res.render('Login-super')
 }

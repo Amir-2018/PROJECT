@@ -27,6 +27,7 @@ router.get('/login_super_page',superController.get_login_super_page);
 router.get('/page_admin',superController.get_page_admin);
 router.get('/get_login_admin',adminController.get_login_admin);
 router.get('/get_products_Page/:id',adminController.get_products_Page); 
+router.get('/get_caisses_Page/:id',adminController.get_caisses_Page);
 router.get('/get_store_Page',adminController.get_store_Page);
 router.get('/get_inventory_Page',adminController.get_inventory_Page);
 router.get('/manage_admins',adminController.manage_admins);
@@ -36,6 +37,10 @@ router.get('/update_admins/:id',superController.get_update_admins);
 router.get('/update_admins/:id',superController.get_update_admins);
 
 
+router.post('/create_caisse/:id',adminController.create_caisse);
+// Get caisses info
+router.get('/get_caisse_info',adminController.get_caisse_info);
+
 router.post('/update_admins/:id',superController.update_admins);
 // to update store
 router.post('/update_store/:id',adminController.update_store);
@@ -44,15 +49,28 @@ router.get('/update_store/:id',adminController.get_update_store);
 router.post('/update_products/:id',adminController.post_update_products);
 router.get('/update_products/:id',adminController.get_update_products);
 // to delete products
-router.post('/delete_products/:id',adminController.post_delete_products);
 router.get('/delete_products/:id',adminController.get_delete_products);
+router.get('/delete_caisses/:id',adminController.get_delete_caisses);
+router.get('/delete_caissiers/:id',adminController.get_delete_caissiers);
+router.post('/delete_multiple_caissiers',adminController.delete_multiple_caissiers);
 
 router.get('/delAll',superController.del_inv);
 router.get('/delete_store/:id',adminController.delete_store);
 router.get('/logout-super',superController.logout_super);
 // caisses and caissiers
-router.get('/get_caissier',adminController.get_caissier);
-router.post('/addCaissier',adminController.addCaissier);
-router.get('/get_dash_data',adminController.get_dash_data);
+router.get('/get_caissier/:id',adminController.get_caissier);
+router.post('/addCaissier/:id',adminController.addCaissier);
+router.get('/get_dash_data/:id',adminController.get_dash_data);
+router.post('/delete_multiple',adminController.delete_multiple);
+router.post('/delete_multiple_products',adminController.delete_multiple_products);
+router.post('/delete_multiple_caisses',adminController.delete_multiple_caisses);
+
+router.post('/search_store',adminController.search_store);
+
+router.get('/get_update_caissiers/:id',adminController.get_update_caissiers);
+router.post('/post_update_caissiers/:id',adminController.post_update_caissiers);
+
+// The last one
+router.get('/get_store_for_caissier/:id',adminController.get_store_for_caissiers);
 
 module.exports = router;

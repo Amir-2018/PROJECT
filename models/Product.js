@@ -16,11 +16,14 @@ const userSchema = new mongoose.Schema({
   },
   product_buying_price : {
     type : String
+  },
+  id_store : {
+    type : String
   }
 
 
 });
 
-const Product = mongoose.model('product', userSchema);
+const Prod = mongoose.model('prod', userSchema);
 
-module.exports = Product;
+module.exports = Prod;

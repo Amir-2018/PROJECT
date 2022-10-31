@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
 
-  id_products:[],
+  id_products:[String],
   id_store : {
     type : String
   }

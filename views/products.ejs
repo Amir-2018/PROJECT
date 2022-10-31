@@ -37,12 +37,15 @@
         .cancel:hover{
             transform: scale(1.1);
         }
+        .update{
+            font-size: 14px;
+        }
     </style>
     <title>Document</title>
 </head>
 <body>
     <div class="box-del none-display">
-        <div class="add-store">Add New Store</div>
+        <div class="add-store">Add New Product</div>
         <div class="new-taw">
             <table class="place-tab">
                
@@ -84,17 +87,12 @@
                     <a href="#" class="text"><span>Acceuil</span></a>
                 </li>
                 <li>
-                    <a href="/get_dash_data"><i class="fa fa-calculator" aria-hidden="true"></i></i></a>
-                    <a href="/get_dash_data" class="text"><span>Caisses</span></a>
+                    
+                        <a href="/get_caisse_info"><i class="fa fa-calculator" aria-hidden="true"></i></i></a>
+                        <a href="/get_caisse_info" class="text"><span>Caisses</span></a>
+                    
                 </li>
-                <li>
-                    <a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
-                    <a href="#" class="text"><span>Visualisation</span></a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-history" style="font-size:18px"></i></a>
-                    <a href="#" class="text"><span>Historique</span></a>
-                </li>
+            
                 <li>
                     <a href="/get_store_Page"><i class="fa fa-fw fa-home"></i></a>
                     <a href="/get_store_Page" class="text"><span>stores</span></a>
@@ -103,13 +101,10 @@
                     <a href="/get_store_Page"><i class="fa fa-fw fa-home"></i></a>
                     <a href="/get_store_Page" class="text"><span>Inventory</span></a>
                 </li>
-                <li>
-                    <a href="#"><i class="fa fa-building-o" aria-hidden="true"></i></a>
-                    <a href="#" class="text"><span>Établissement</span></a>
-                </li>
+
                 <li >
-                    <a href="/get_caissier"><i class="fa fa-fw fa-home"></i></a>
-                    <a href="/get_caissier" class="text"><span>Caissiers</span></a>
+                    <a href="/get_store_for_caissier/<%=admin._id%>"><i class="fa fa-fw fa-home"></i></a>
+                    <a href="/get_store_for_caissier/<%=admin._id%>" class="text"><span>Caissiers</span></a>
                 </li>
 
 
@@ -125,22 +120,26 @@
         </div>
         <div class="left-side">
             <div class="nav">
-            <div class="boxnav" id="boxnav">Inventory</div>
+            <div class="boxnav" id="boxnav"><span class="update">Inventory-<%=store.name %></span></div>
             <div class="boxnav box-nav">
                 <table class="tbl-nav">
-                    <tr><td><input type="text" class="text-now" placeholder="Search..."></td><td><button class="delete-btn" onclick="blockAff()"></i>Add</button></td></tr>
+                    <tr>
+                        <td><input type="text" class="text-now" placeholder="Search..."></td><td><button class="delete-btn" onclick="blockAff()"></i>Add</button></td>
+                        <td><button  class="delete-btns" onclick="GetSelectedP()">Delete</button></td>
+                    </tr>
                 </table>
             </div>
             <div class="boxnav"><i class="fa fa-bell" aria-hidden="true"></i>
             </div>
             <div class="boxnav" id="amir">
-                <span class="amir">Amir</span>
+                <span class="amir"><%=admin.name%></span>
                 
-                <span class="amir">Maalaoui </span>
+                <span class="amir"><%=admin.lastname%></span>
                 
             </div>
             <div class="boxnav">
-                <img src="cv.jpg" id="img" alt="cv.jpg">
+                <img src="/<%=admin.img.data%>">
+
             </div>
         </div>
             <div class="page-content">
@@ -148,7 +147,7 @@
 
                     <div class="childbox childbox2">
 
-                                <table>
+                                <table id="tblFruits">
                                         <tr>
                                             <th><i class="fa fa-circle-thin" aria-hidden="true"></i></th>
                                             <th><span>Nom Produit</span></th>
@@ -165,7 +164,7 @@
                                             
                                             <% for(let i=0;i<tab_products.length;i++) {%>
                                         <tr class="border-tr">
-                                            <td><i class="fa fa-circle-thin" aria-hidden="true"></i></td>
+                                            <td> <input type="checkbox" id="vehicle1" name="delStore" value="<%=tab_products[i]._id%>"></td>
                                             <td><span><%=tab_products[i].product_code %></span></td>
                                             <td><span><%=tab_products[i].product_name %></span></td>
                                             <td><span><%=tab_products[i].product_category %></span></td>
@@ -174,8 +173,7 @@
                                             <td><span><%=tab_products[i].product_image%></span></td>
                                             <td>
                                                 <a href="/update_products/<%=tab_products[i]._id%>"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                                <a href="/delete_products/<%=tab_products[i]._id%>"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></a> 
-                                                
+                                                <a href="/delete_products/<%=tab_products[i]._id%>"  onclick="return confirm('Are you sure you want to delete this store?')";> <i class="fa fa-trash" aria-hidden="true" >  </i></a>                                              
                                             </td>
                                             <!-- <td><button class="btn-susp table-btns"><a href="#" >:</a></button></td> -->
                                         </tr>

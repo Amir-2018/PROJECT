@@ -264,7 +264,7 @@ html,body{
     height: 130vh;
 }
 .fa{
-    color: white;
+    
     font-size: 20px;
 }
 
@@ -904,6 +904,26 @@ table {
     
   }
 
+  .delete-btns{
+    width: 134px;
+    height: 39px;
+    border-radius: 8px;
+    background-color: #FF7A7A;
+    border: none;
+    color: white;
+    font-weight: 400;
+    font-size: 16px;
+    margin-left: 10px;
+    z-index: 999;
+    cursor: pointer;
+    transition: .2s;
+    
+  }
+  .delete-btns:hover{
+  transform: scale(1.1);
+    
+  }
+
   .text-now{
     width: 337px;
     height: 40px;
@@ -951,7 +971,7 @@ font-size: 16px;
   }
   
   .pagination a.active {
-    background-color: #4CAF50;
+    background-color: #0B7C86;
     color: white;
   }
   
