@@ -1,0 +1,430 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+
+        #map {
+            height: calc(100% - 40px);
+            /* The height is 400 pixels */
+            width: calc(100% - 250px);
+            /* The width is the width of the web page */
+            margin-left: 0px;
+            margin-top: 0px;
+            width: 100%;
+            height: 85vh;
+
+        }
+
+
+
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: absolute;
+            /* Stay in place */
+            z-index: 999;
+            /* Sit on top */
+            top: 100px;
+            /* Location of the box */
+            left: 50%;
+            top: 20%;
+            transform: translate(-30%);
+            width: 23vw;
+            /* Full width */
+            height: 21vh;
+            /* Full height */
+            overflow: visible;
+            /* Enable scroll if needed */
+
+
+
+
+
+
+
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: red;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 100%;
+            height: 100%;
+
+
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+            background: #FFFFFF;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+
+
+
+
+
+
+        }
+
+        /* The Close Button */
+        .close {
+            color: rgba(100, 116, 139, 1);
+
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 1px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+        #buttons {
+            display: flex;
+            flex-direction: row;
+
+            width: 100%;
+
+
+
+
+        }
+
+        .btn {
+            width: 117px;
+            height: 40px;
+            margin-left: 10px;
+
+            background: rgba(11, 124, 134, 1);
+            border-radius: 8px;
+
+            border: none;
+
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 24px;
+            /* identical to box height */
+            margin-top: 5%;
+
+
+            color: #FFFFFF;
+        }
+
+
+        #btn1 {
+            margin-right: 15px;
+            margin-left: 75px;
+            width: 117px;
+
+        }
+
+        #btn2 {
+            width: 84px;
+
+        }
+
+        .popup {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 24px;
+            /* identical to box height */
+
+            letter-spacing: 0.02em;
+
+            color: #0D2238;
+        }
+
+        .popup1 {
+
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 24px;
+            /* identical to box height */
+
+
+            color: #475569;
+        }
+
+        .date {
+
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 30px;
+            /* identical to box height */
+
+
+            color: #64748B;
+        }
+
+
+        #lastweek {
+            margin-right: 20px;
+        }
+
+        .day {
+
+            width: 126px;
+            height: 48px;
+            border-radius: 10px;
+            background-color: rgba(203, 213, 225, 1);
+            border: none;
+            color: #475569;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .device {
+
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 30px;
+            /* identical to box height */
+            border: rgba(203, 213, 225, 1);
+
+            color: #64748B;
+        }
+
+        #device {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 24px;
+            /* identical to box height */
+
+            padding-left: 20px;
+            color: #475569;
+
+            background: #FFFFFF;
+            border: 1px solid #CBD5E1;
+            box-sizing: border-box;
+            border-radius: 10px;
+            width: 167px;
+            height: 48px;
+
+        }
+
+        #date {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 24px;
+            /* identical to box height */
+            padding-left: 20px;
+
+            color: #475569;
+
+            background: #FFFFFF;
+            border: 1px solid #CBD5E1;
+            box-sizing: border-box;
+            border-radius: 10px;
+            width: 167px;
+            height: 48px;
+
+        }
+
+        .devices {
+            margin-right: 80px;
+            margin-left: 30px;
+        }
+
+        .days {
+            width: 20%;
+        }
+
+
+
+        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+        @media screen and (max-height: 450px) {
+            .sidebar {
+                padding-top: 15px;
+            }
+
+            .sidebar a {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+
+
+
+
+        <div id="map"> </div>
+
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close"><i class='bx bxs-x-circle'></i></i></span>
+                <div><span class="popup">Date:</span> <span class="popup1"></span> </div>
+                <div><span class="popup">Time:</span> <span id="time" class="popup1"></span> </div>
+                <div><span class="popup">Location:</span> <span id="location" class="popup1"></span> </div>
+                <div id="buttons">
+                    <button class="btn" id="btn1">Previous</button>
+                    <button class="btn" id="btn2">Next</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+        <script>
+            function openNav() {
+                document.getElementById("mySidebar").style.width = "250px";
+                document.getElementById('toggle').setAttribute("onclick", "closeNav()");
+                document.getElementById("toggle").innerHTML = "×";
+                document.getElementById("main").style.marginLeft = "250px";
+            }
+
+            function closeNav() {
+                document.getElementById("mySidebar").style.width = "50px";
+                document.getElementById('toggle').setAttribute("onclick", "openNav()");
+                document.getElementById("toggle").innerHTML = "<i class='bx bx-menu'></i>";
+                document.getElementById("main").style.marginLeft = "40px";
+
+            }
+        </script>
+
+
+
+
+        <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+        <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa2g-9E0KO96a4N5zuh0RO3AR6av1CUZU&callback=initMap&v=weekly"
+            async></script>
+        <script>
+            function initMap() {
+                // The location of Uluru
+                const uluru = {
+                    lat: 35.344,
+                    lng: 9.036
+                };
+                // The map, centered at Uluru
+                const map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 10,
+                    center: uluru,
+                });
+                // Send post request to get all stores positions
+                
+                var markers = [{
+                        lat: 35.344,
+                        lng: 11.036,
+                        datetime: "12/10/2022-20:32:35"
+                    },
+                    {
+                        lat: 34.344,
+                        lng: 10.036,
+                        datetime: "13/10/2022-20:32:35"
+                    },
+                    {
+                        lat: 33.344,
+                        lng: 9.036,
+                        datetime: "14/10/2022-20:32:35"
+                    },
+                ];
+
+                var mrk;
+                var icon = {
+                    url: "shop.png", // url
+                    scaledSize: new google.maps.Size(40, 40), // scaled size
+                    origin: new google.maps.Point(0, 0), // origin
+                    anchor: new google.maps.Point(0, 0) // anchor
+                };
+
+                var icon2 = {
+                    url: "shop.png", // url
+                    scaledSize: new google.maps.Size(40, 40), // scaled size
+                    origin: new google.maps.Point(0, 0), // origin
+                    anchor: new google.maps.Point(0, 0) // anchor
+                };
+
+
+                for (var i = 0; i < 5; i++) {
+
+                    marker = new google.maps.Marker({
+                        position: {
+                            lat: markers[i].lat,
+                            lng: markers[i].lng
+                        },
+                        map,
+                        title: markers[i].datetime,
+                        icon: icon,
+                    });
+
+                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
+
+                        marker.addListener("click", () => {
+                            /*   alert("hello" + i.toString()); */
+                            modal.style.display = "block";
+                            document.getElementById("location").innerHTML = "lat:" + markers[i].lat
+                                .toString() + "," + "lng" + markers[i].lat.toString();
+                        });
+
+                    })(marker, i));
+                }
+
+
+
+
+
+
+            }
+        </script>
+
+
+
+
+        <script>
+            // Get the modal
+            var modal = document.getElementById("myModal");
+
+
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+        </script>
+
+</body>
+
+</html>

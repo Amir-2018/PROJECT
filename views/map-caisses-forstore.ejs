@@ -10,9 +10,6 @@
 
     <link rel="stylesheet" href="/store/style.css">
     <style>
-                .store-owners{
-            font-size: 15px;
-        }
         .btn-susp{
             transition: 0.1s;
         }
@@ -27,7 +24,7 @@
             transform: scale(1.1);
         }
         tr td input[type="text"]{
-            padding-left: 15px  ;
+            padding-left: 15px;
             font-size: 15px;
             color: gray;
         }
@@ -43,25 +40,26 @@
     </style>
     <title>Document</title>
 </head>
+
 <body>
     <div class="box-del none-display">
-        <div class="add-store">Add New Product</div>
+        <div class="add-store">Add Cashiers</div>
         <div class="new-taw">
             <table class="place-tab">
-               
-                <form method="POST" action="/add_product_to_inventory/<%=id%>">
-                    <tr><td><span>Nom Produit</span></td><td><span>Code Bar</span></td></tr>
-                    <tr><td><input type="text" name="product_name" id=""></td><td><input type="text" name="product_code"></td></tr>
-                    <tr><td><span>Prix Achat</span></td><td><span>Prix Vente</span></td></tr>
-                    <tr><td><input type="text" name="product_buying_price " id=""></td><td><input type="text" name="product_selling_price"></td></tr>
-                    <tr><td><span>Category</span></td><td><span>Date expiration</span></td></tr>
-                    <tr><td><input type="text" name="product_category" id=""></td><td><input type="text" name="position"></td></tr> 
+                <form method="POST" action="/addCaissier/<%=store._id%>">
+                    <tr><td><span>name</span></td><td><span>Lastname</span></td></tr>
+                    <tr><td><input type="text" name="name" id=""></td><td><input type="text" name="lastname"></td></tr>
+                    <tr><td><span>email</span></td><td><span>telephone</span></td></tr>
+                    <tr><td><input type="text" name="email" id=""></td><td><input type="text" name="tel"></td></tr>
+                    <tr><td><span>age</span></td><td><span>mot-de-passe</span></td></tr>
+                    <tr><td><input type="text" name="age" id=""></td><td><input type="password" name="password"></td></tr> 
                 
             </table>    
         </div>
        <div class="tow">
         <table >
             <tr><td class="two-tab"><button type="reset" class="cancel" onclick="deleteB()">Cancel</button><button type="submit" onclick="deleteB()"  class="cancel addc">Add</button></td></tr>
+            
         </table>
                 </form>
        </div>
@@ -85,7 +83,7 @@
                     <a href="/get_store_Page"><i class="fa fa-home" aria-hidden="true"></i></a>
                     <a href="/get_store_Page" class="text"><span>Home</span></a>
                 </li>
-                <li>
+                <li >
                     <a href="/get_caisse_info"><i class="fa fa-calculator" aria-hidden="true"></i></i></a>
                     <a href="/get_caisse_info" class="text"><span>Counters</span></a>
                 </li>
@@ -93,22 +91,20 @@
                     <a href="/store_track"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
                     <a href="/store_track" class="text"><span>Store tracking</span></a>
                 </li>
-                <li >
+                <li  class="text-caisse">
                     <a href="/track_caisses/<%=store._id%>"><i class="fa fa-credit-card" aria-hidden="true"></i></a>
                     <a href="/track_caisses/<%=store._id%>" class="text"><span>Counters tracking</span></a>
                 </li>
-                <li>
-                    <a href="/get_store_Page"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
-                    <a href="/get_store_Page" class="text"><span>stores</span></a>
-                </li>
-                <li class="text-caisse">
-                    <a href="/get_store_Page"><i class="fa fa-fw fa-cog"></i></a>
-                    <a href="/get_store_Page" class="text"><span>Inventory</span></a>
-                </li>
-                
-
                 <li >
-                    <a href="/get_store_for_caissier/<%=admin._id%>"><i class="fa fa-user-circle-o"></i></a>
+                    <a href="/get_store_Page"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
+                    <a href="/get_store_Page" class="text"><span>Stores</span></a>
+                </li>
+                <li>
+                    <a href="/get_inventory_Page"><i class="fa fa-cog" aria-hidden="true"></i></a>
+                    <a href="/get_inventory_Page" class="text"><span>Inventory</span></a>
+                </li>
+                <li>
+                    <a href="/get_store_for_caissier/<%=admin._id%>"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
                     <a href="/get_store_for_caissier/<%=admin._id%>" class="text"><span>Cashiers</span></a>
                 </li>
 
@@ -121,25 +117,26 @@
 
 
             </ul>
-            
         </div>
         <div class="left-side">
             <div class="nav">
-            <div class="boxnav" id="boxnav"><span class="update">Inventory-<%=store.name %></span></div>
+            <div class="boxnav update" id="boxnav" >Stores</div>
             <div class="boxnav box-nav">
                 <table class="tbl-nav">
                     <tr>
-                        <td><input type="text" class="text-now" placeholder="Search..."></td><td><button class="delete-btn" onclick="blockAff()"></i>Add</button></td>
-                        <td><button  class="delete-btns" onclick="GetSelectedP()">Delete</button></td>
+                        
+                        
+
                     </tr>
                 </table>
             </div>
             <div class="boxnav"><i class="fa fa-bell" aria-hidden="true"></i>
             </div>
+            
             <div class="boxnav" id="amir">
-                <span class="amir"><%=admin.name%></span>
+                <span class="amir"><%=admin.name %></span>
                 
-                <span class="amir"><%=admin.lastname%></span>
+                <span class="amir"><%=admin.lastname %></span>
                 
             </div>
             <div class="boxnav">
@@ -155,35 +152,25 @@
                                 <table id="tblFruits">
                                         <tr>
                                             <th><i class="fa fa-circle-thin" aria-hidden="true"></i></th>
-                                            <th><span>Product Name</span></th>
-                                            <th><span>Bar Code</span></th>
-                                            <th><span>Purchasing price</span></th>
-                                            <th><span>Selling price</span></th>
-                                            <th><span>Category</span></th>
-                                            <th><span>Expiration date</span></th>
-                                            <th><span>Actions</span></th>
-                                            <!-- <th><span>Etat</span></th> -->
-                                            
-                                            
+                                            <th><span>Store Name</span></th>
+                                            <th class="stretch"><span ></span></th>
+                                            <th><span></span></th>
+                                            <th><span>Cashiers</span></th>    
                                         </tr>
+                               
+                                       
+                                        <% for(let i=0;i<store.length;i++) {%>
+                                            <tr class="border-tr">
+                                                <td><i class="fa fa-circle-thin" aria-hidden="true"></i></td>                                                <td><span><%=store[i].name %></span></td>
+                                                <td class="stretch"><span></span></td>
                                             
-                                            <% for(let i=0;i<tab_products.length;i++) {%>
-                                        <tr class="border-tr">
-                                            <td> <input type="checkbox" id="vehicle1" name="delStore" value="<%=tab_products[i]._id%>"></td>
-                                            <td><span><%=tab_products[i].product_code %></span></td>
-                                            <td><span><%=tab_products[i].product_name %></span></td>
-                                            <td><span><%=tab_products[i].product_category %></span></td>
-                                            <td><span><%=tab_products[i].product_selling_price %></span></td>
-                                            <td><span><%=tab_products[i].product_buying_price %></span></td>
-                                            <td><span><%=tab_products[i].product_image%></span></td>
-                                            <td>
-                                                <a href="/update_products/<%=tab_products[i]._id%>"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                                <a href="/delete_products/<%=tab_products[i]._id%>"  onclick="return confirm('Are you sure you want to delete this store?')";> <i class="fa fa-trash" aria-hidden="true" >  </i></a>                                              
-                                            </td>
-                                            <!-- <td><button class="btn-susp table-btns"><a href="#" >:</a></button></td> -->
-                                        </tr>
+                                                <td><span><div class="img-icon">
+                                                    
+                                                </div></td>
+                                                <td><button class="btn-susp table-btn"><a href="/show_maps/<%=store[i]._id%>">Map</a></button></td>
+                                            </tr>
                                         <% } %>
-
+                             
                                     </table>
 
                     </div>
@@ -193,21 +180,19 @@
         </div>
         <div class="pagination">
             <a href="#">&laquo;</a>
-            <a href="#">1</a>
-            <a class="active" href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">6</a>
+            <a href="/get_store_page?page=1&limit=9">1</a>
+            <a class="active" href="/get_store_page?page=2&limit=9">2</a>
+            <a href="/get_store_page?page=3&limit=9">3</a>
+            <a href="/get_store_page?page=4&limit=9">4</a>
+            <a href="/get_store_page?page=5&limit=9">5</a>
+            <a href="/get_store_page?page=6&limit=9">6</a>
+            <a href="/get_store_page?page=7&limit=9">7</a>
             <a href="#">&raquo;</a>
           </div>
     </div>
-    
+
     </div>
 
-
-
 <script src="/store/script.js"></script>
-
 </body>
 </html>

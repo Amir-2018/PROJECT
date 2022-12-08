@@ -72,31 +72,37 @@
                 
 
                 <li id="titte-liste">
-                    <a href="#"><i class="fa fa-area-chart" aria-hidden="true"></i></a>
-                    <a href="#" class="text"><span class="insight">QLogistics</span></a>
+                    <a href="#" class="text"><img src="/store/icones/insight.png" alt=""></a>
                 </li>
                 
                 <li>
-                    <a href="#"><i class="fa fa-user" aria-hidden="true"></i></a>
-                    <a href="#" class="text"><span>Acceuil</span></a>
+                    <a href="/get_store_Page"><i class="fa fa-home" aria-hidden="true"></i></a>
+                    <a href="/get_store_Page" class="text"><span>Home</span></a>
                 </li>
                 <li>
                     <a href="/get_caisse_info"><i class="fa fa-calculator" aria-hidden="true"></i></i></a>
-                    <a href="/get_caisse_info" class="text"><span>Caisses</span></a>
+                    <a href="/get_caisse_info" class="text"><span>Counters</span></a>
+                </li>
+                <li>
+                    <a href="/store_track"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+                    <a href="/store_track" class="text"><span>Store tracking</span></a>
+                </li>
+                <li >
+                    <a href="/track_caisses/<%=store._id%>"><i class="fa fa-credit-card" aria-hidden="true"></i></a>
+                    <a href="/track_caisses/<%=store._id%>" class="text"><span>Counters tracking</span></a>
                 </li>
 
-                <li >
-                    <a href="/get_store_Page"><i class="fa fa-fw fa-home"></i></a>
-                    <a href="/get_store_Page" class="text"><span>stores</span></a>
+                <li>
+                    <a href="/get_store_Page"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
+                    <a href="/get_store_Page" class="text"><span>Stores</span></a>
                 </li>
-                <li class="text-caisse">
-                    <a href="/get_inventory_Page"><i class="fa fa-fw fa-home"></i></a>
+                <li  class="text-caisse">
+                    <a href="/get_inventory_Page"><i class="fa fa-cog" aria-hidden="true"></i></a>
                     <a href="/get_inventory_Page" class="text"><span>Inventory</span></a>
                 </li>
-
                 <li >
-                    <a href="/get_store_for_caissier/<%=admin._id%>"><i class="fa fa-fw fa-home"></i></a>
-                    <a href="/get_store_for_caissier/<%=admin._id%>" class="text"><span>Caissiers</span></a>
+                    <a href="/get_store_for_caissier/<%=admin._id%>"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+                    <a href="/get_store_for_caissier/<%=admin._id%>" class="text"><span>Cashiers</span></a>
                 </li>
 
 
@@ -146,11 +152,11 @@
                                 <table id="tblFruits">
                                         <tr>
                                             <th><i class="fa fa-circle-thin" aria-hidden="true"></i></th>
-                                            <th><span>Nom du store</span></th>
+                                            <th><span>Store Name</span></th>
                                             <th class="stretch"><span ></span></th>
                                             <th><span></span></th>
                                             <th><span>Inventory</span></th>  
-                                            <th><span>Caisses</span></th>    
+                                            <th><span>Counters</span></th>    
                                         </tr>
                                
                                        
@@ -167,7 +173,7 @@
                                                     </a></div>
                                                 </div></td>
                                                 <td><button class="btn-susp table-btn"><a href="/get_products_Page/<%=store[i]._id %>">inventory</a></button></td>
-                                                <td><button class="btn-susp table-btn"><a href="/get_caisses_Page/<%=store[i]._id %>">Caisses</a></button></td>
+                                                <td><button class="btn-susp table-btn"><a href="/get_caisses_Page/<%=store[i]._id %>">Counters</a></button></td>
                                             </tr>
                                         <% } %>
                              

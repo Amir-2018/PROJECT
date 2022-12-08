@@ -11,7 +11,9 @@
 
     <link rel="stylesheet" href="/caisse/style.css">
     <style>
-
+    .fa-bell{
+        color: black;
+    }
     </style>
     <title>Document</title>
 </head>
@@ -29,21 +31,28 @@
                 
 
                 <li id="titte-liste">
-                    <a href="#"><i class="fa fa-area-chart" aria-hidden="true"></i></a>
-                    <a href="#" class="text"><span class="insight">Insight</span></a>
+                    <a href="#" class="text"><img src="/store/icones/insight.png" alt=""></a>
                 </li>
                 
                 <li>
-                    <a href="#"><i class="fa fa-user" aria-hidden="true"></i></a>
-                    <a href="#" class="text"><span>Acceuil</span></a>
+                    <a href="/get_store_Page"><i class="fa fa-home" aria-hidden="true"></i></a>
+                    <a href="/get_store_Page" class="text"><span>Home</span></a>
+                </li>
+                <li  class="text-caisse" >
+                    <a href="/get_caisse_info"><i class="fa fa-calculator" aria-hidden="true"></i></a>
+                    <a href="/get_caisse_info" class="text"><span>Counters</span></a>
+                </li>
+                <li>
+                    <a href="/store_track"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+                    <a href="/store_track" class="text"><span>Store tracking</span></a>
                 </li>
                 <li >
-                    <a href="/get_caisse_info"><i class="fa fa-calculator" aria-hidden="true"></i></i></a>
-                    <a href="/get_caisse_info" class="text"><span>Caisses</span></a>
+                    <a href="/track_caisses/<%=store._id%>"><i class="fa fa-credit-card" aria-hidden="true"></i></a>
+                    <a href="/track_caisses/<%=store._id%>" class="text"><span>Counters tracking</span></a>
                 </li>
 
                 <li>
-                    <a href="/get_store_Page"><i class="fa fa-fw fa-home"></i></a>
+                    <a href="/get_store_Page"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
                     <a href="/get_store_Page" class="text"><span>stores</span></a>
                 </li>
                 <li id="inventory">
@@ -52,12 +61,12 @@
                 </li>
 
                 <li >
-                    <a href="/get_store_for_caissier/<%=admin._id%>"><i class="fa fa-fw fa-home"></i></a>
-                    <a href="/get_store_for_caissier/<%=admin._id%>" class="text"><span>Caissiers</span></a>
+                    <a href="/get_store_for_caissier/<%=admin._id%>"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+                    <a href="/get_store_for_caissier/<%=admin._id%>" class="text"><span>Cashiers</span></a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
-                    <a href="#" class="text"><span>Log out</span></a>
+                    <a href="/logout-super"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+                    <a href="/logout-super" class="text"><span>Log out</span></a>
                 </li>
                 
 
@@ -87,16 +96,16 @@
             <div class="page-content">
                 <div class="big-box">
                     <div class="childbox childbox1">
-                        <div class="box-ofbox box-ofbox1"><span class="croie">X</span></div>
+                        <div class="box-ofbox box-ofbox1"><span class="croie"></span></div>
                         <div class="box-ofbox box-ofbox2"><span class="center-title"><%=store.name%> - info - Caisses </span></div>
                         <div class="box-ofbox box-ofbox3">
                             <div class="boxcadre">
-                                <div class="ligne"><span class="dash-line">Comptes</span></div>
+                                <div class="ligne"><span class="dash-line">Accounts</span></div>
                                 <div class="ligne"><span class="dash-number"><%=nbcomptes%></span></div>
                             </div>
                             <div class="boxcadre">
-                                <div class="ligne"><span class="dash-line">heures actif</span></div>
-                                <div class="ligne"><span class="dash-number">1292 h</span></div>
+                                <div class="ligne"><span class="dash-line">actif hours</span></div>
+                                <div class="ligne"><span class="dash-number"><%=actif_hours%> h</span></div>
                             </div>
                             <div class="boxcadre">
                                 <div class="ligne"><span class="dash-line">Nb Tickets</span></div>
@@ -111,9 +120,9 @@
                             <div class="tableau1">
                                 <div class="tabl">
                                     <div class="voir">
-                                        <div class="casi"><span>Caissier</span></div>
+                                        <div class="casi"><span>Cashiers</span></div>
                                         <div></div>
-                                        <div class="tous"><span>Voir tout</span></div>
+                                        <div class="tous" ><a href="/get_store_for_caissier/<%=store._id%>"><span>See All</span></a></div>
                                     </div>
                                 </div>
                                 <div class="tabl h3">(3)</div>
@@ -140,9 +149,9 @@
                                 <table>
                                         <tr>
                                             <th><i class="fa fa-circle-thin" aria-hidden="true"></i></th>
-                                            <th><span>Caisse</span></th>
+                                            <th><span>Counter</span></th>
                                             <th>Position</th>
-                                            <th>Etat</th>
+                                            <th>State</th>
                                         </tr>
                                         <%for(let i=0;i<caisses.length;i++ ){ %>
                                         

@@ -46,8 +46,7 @@
                 
 
                 <li id="titte-liste">
-                    <a href="#"><i class="fa fa-area-chart" aria-hidden="true"></i></a>
-                    <a href="#" class="text"><span class="insight">QLogistics</span></a>
+                    <a href="#" class="text"><img src="/store/icones/logistic.png" alt=""></a>
                 </li>
                 
                 <li>
@@ -55,10 +54,19 @@
                     <a href="#" class="text"><span>Acceuil</span></a>
                 </li>
                 <li>
-                    <a href="/get_dash_data"><i class="fa fa-calculator" aria-hidden="true"></i></i></a>
-                    <a href="/get_dash_data" class="text"><span>Caisses</span></a>
+                    
+                        <a href="/get_caisse_info"><i class="fa fa-calculator" aria-hidden="true"></i></i></a>
+                        <a href="/get_caisse_info" class="text"><span>Counters</span></a>
+                    
                 </li>
-           
+                <li>
+                    <a href="/store_track"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+                    <a href="/store_track" class="text"><span>Store tracking</span></a>
+                </li>
+                <li >
+                    <a href="/track_caisses/<%=store._id%>"><i class="fa fa-credit-card" aria-hidden="true"></i></a>
+                    <a href="/track_caisses/<%=store._id%>" class="text"><span>Counters tracking</span></a>
+                </li>
                 <li>
                     <a href="/get_store_Page"><i class="fa fa-fw fa-home"></i></a>
                     <a href="/get_store_Page" class="text"><span>stores</span></a>

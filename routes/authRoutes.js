@@ -72,5 +72,15 @@ router.post('/post_update_caissiers/:id',adminController.post_update_caissiers);
 
 // The last one
 router.get('/get_store_for_caissier/:id',adminController.get_store_for_caissiers);
+// router.all('*',adminController.not_found); 
+// test pagination
+router.get('/testP',adminController.testP); 
 
+router.get('/manage_admins_For_Delete',adminController.manage_admins_For_Delete);
+router.post('/delete_multiple_admins',superController.delete_multiple_admins);
+router.get('/store_track',adminController.store_track);
+router.get('/store_for_map',adminController.store_for_map);
+router.get('/track_caisses',adminController.track_caisses);
+router.get('/get_map/:id',adminController.get_map);
+router.get('/show_maps/:id',adminController.show_maps);
 module.exports = router;

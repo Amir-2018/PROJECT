@@ -37,6 +37,21 @@
         .cancel:hover{
             transform: scale(1.1);
         }
+
+        label {
+  background-color: #0B7C86;
+  color: white;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+#file-chosen{
+  margin-left: 0.3rem;
+  font-family: sans-serif;
+}
     </style>
     <title>Document</title>
 
@@ -52,7 +67,11 @@
                     <tr><td><span>Email</span></td><td><span>Phone</span></td></tr>
                     <tr><td><input type="text" name="email" id=""></td><td><input type="text" name="tel"></td></tr>
                     <tr><td><span>Adress</span></td><td><span>Password</span></td></tr>
-                    <tr><td><input type="file" name="image" id=""></td><td><input type="password" name="password"></td></tr> 
+                    <tr><td><input type="file" name="image" id="actual-btn" hidden> <!-- our custom upload button -->
+                        <label for="actual-btn">Choose File</label>
+                        
+                        <!-- name of file chosen -->
+                        <span id="file-chosen">No file chosen</span></td><td><input type="password" name="password"></td></tr> 
                 
             </table>    
         </div>
@@ -75,13 +94,12 @@
                 
 
                 <li id="titte-liste">
-                    <a href="#"><i class="fa fa-area-chart" aria-hidden="true"></i></a>
-                    <a href="#" class="text"><span class="insight">QLogistics</span></a>
+                    <a href="#" class="text"><img src="/store/icones/insight.png" alt=""></a>
                 </li>
                 
                 <li>
-                    <a href="#"><i class="fa fa-user" aria-hidden="true"></i></a>
-                    <a href="#" class="text"><span>Home</span></a>
+                    <a href="/get_store_Page"><i class="fa fa-home" aria-hidden="true"></i></a>
+                    <a href="/get_store_Page" class="text"><span>Home</span></a>
                 </li>
 
                 <li  class="text-caisse">
@@ -110,7 +128,10 @@
             <div class="boxnav" id="boxnav"><span class="store-owners">Store owners</span></div>
             <div class="boxnav box-nav">
                 <table class="tbl-nav">
-                    <tr><td><input type="text" class="text-now" placeholder="Search..."></td><td><button  class="delete-btn" onclick="blockAff()"></i>Add</button></td></tr>
+                    <tr>
+                        <td><input type="text" class="text-now" placeholder="Search..."></td><td><button  class="delete-btn" onclick="blockAff()"></i>Add</button></td>
+                        <td><button  class="delete-btns" onclick="GetSelectedO()">Delete</button></td>
+                    </tr>
                 </table>
             </div>
             <div class="boxnav"><i class="fa fa-bell" aria-hidden="true"></i>
@@ -122,7 +143,7 @@
                 
             </div>
             <div class="boxnav">
-                <img src="store/cv.jpg" id="img" alt="cv.jpg">
+                <img src="/store/cv.jpg" id="img" alt="cv.jpg">
             </div>
         </div>
             <div class="page-content">
@@ -130,7 +151,7 @@
 
                     <div class="childbox childbox2">
 
-                                <table>
+                                <table id="tblFruits">
                                         <tr>
                                             <th><i class="fa fa-circle-thin" aria-hidden="true"></i></th>
                                             <th><span>Nom</span></th>
@@ -174,12 +195,12 @@
         </div>
         <div class="pagination">
             <a href="#">&laquo;</a>
-            <a href="#">1</a>
-            <a class="active" href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">6</a>
+            <a href="/manage_admins_For_Delete?page=1&limit=9">1</a>
+            <a href="/manage_admins_For_Delete?page=2&limit=9">2</a>
+            <a href="/manage_admins_For_Delete?page=3&limit=9">3</a>
+            <a href="/manage_admins_For_Delete?page=4&limit=9">4</a>
+            <a href="/manage_admins_For_Delete?page=5&limit=9">5</a>
+            <a href="/manage_admins_For_Delete?page=6&limit=9">6</a>
             <a href="#">&raquo;</a>
           </div>
     </div>

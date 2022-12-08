@@ -62,11 +62,20 @@
         const deleteB = ()=>{
           document.querySelector('.box-del').classList.remove('block-display')
           document.querySelector('.box-del').classList.add('none-display')
+          document.querySelector('.container').classList.remove('blur')
+          document.querySelector('.box-del').classList.remove('box-delNone')
         }
 
       const blockAff = ()=>{
+       
+        
         document.querySelector('.box-del').classList.remove('none-display')
         document.querySelector('.box-del').classList.add('block-display')
+        document.querySelector('.container').classList.add('blur')
+        document.querySelector('.box-del').classList.add('box-delNone')
+
+        
+        //filter: blur(5px);
       }
 
       function GetSelected() {
@@ -103,6 +112,7 @@
           if(test){
             location.href="/get_store_page"
             xhr.send(data);
+            
           }
             
         }else{
@@ -249,5 +259,50 @@ function GetSelectedM() {
       
   }else{
     alert('Please select at least one caissier')
+  }
+};
+
+function GetSelectedO() {
+  //Create an Array.
+  var selected = new Array();
+
+  //Reference the Table.
+  var tblFruits = document.getElementById("tblFruits");
+
+  //Reference all the CheckBoxes in Table.
+  var chks = tblFruits.getElementsByTagName("INPUT");
+
+  // Loop and push the checked CheckBox value in Array.
+  for (var i = 0; i < chks.length; i++) {
+      if (chks[i].checked) {
+          selected.push(chks[i].value);
+      }
+  }
+
+  //Display the selected CheckBox values.
+  if (selected.length > 0) {
+    
+    let xhr = new XMLHttpRequest();
+    
+    xhr.open("POST", "/delete_multiple_admins");
+    
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    
+   
+    
+    let data = JSON.stringify(selected);
+    const test = confirm('Are you sure you want to delete theses admins?');
+    if(test)
+      xhr.send(data);
+    
+      xhr.onload = () =>{
+          location.href="/manage_admins_For_Delete"
+        
+    } 
+    
+      
+  }else{
+    alert('Please select at least one admin')
   }
 };

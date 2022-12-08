@@ -34,8 +34,14 @@ module.exports.loginAdmin =async (req, res) => {
 module.exports.get_login_admin =async (req, res) => {
     res.render('login')
 }
+const session = require('express-session');
+const flash = require('connect-flash');
 module.exports.create_store =async (req, res) => {
-    // Test if super admin is authenticated 
+  
+  var tab = (req.body.position).split(',');
+  req.body["long"] = tab[0] ;
+  req.body["lat"]= tab[1] ; 
+    //Test if super admin is authenticated 
     const token = req.cookies.jwt;
     if (token) {
       jwt.verify(token, 'net ninja secret', async (err, decodedToken) => {
@@ -47,11 +53,14 @@ module.exports.create_store =async (req, res) => {
         } else {
           let admin = await Admin.findById(decodedToken.id);
           req.body["id_admin"] = admin._id ; 
+          req.body["actif_hours"] = 0 ; 
+          
           Store.create(req.body)
           .then(store =>{
             req.body["id_admin"] = admin._id ; 
             Inventaire.create({id_store : store._id})
             .then(inventaire =>{
+
               res.redirect('get_store_page');
             })
             .catch(err =>{
@@ -111,7 +120,7 @@ module.exports.add_product_to_inventory =async (req, res) => {
                     if(i== inventaire.id_products.length-1){
                         // make it into condition
                         // res.render('products',{tab_products: tab_products}) 
-                        res.render("products",{tab_products : tab_products,id : req.params.id,admin:admin},)
+                        res.render("products",{tab_products : tab_products,id : req.params.id,admin:admin,store:store},)
                     }
                     
                   }).catch(err =>{
@@ -373,6 +382,9 @@ module.exports.create_caisse =async (req, res) => {
       Store.findOne({_id: mongoose.Types.ObjectId(req.params.id)})
 
       .then(store =>{
+      var tab = (req.body.position).split(',');
+      req.body["long"] = tab[0] ;
+      req.body["lat"]= tab[1] ; 
        req.body["id_store"] = store._id;
        req.body["state"] = "OFF"
        Caisse.create(req.body)
@@ -433,12 +445,47 @@ module.exports.get_inventory_Page =async (req, res) => {
 
 
 module.exports.manage_admins =async (req, res) => {
-  Admin.find({}).then(admins =>{
+  const {page = 1,limit = 9} = req.query ;
+  Admin.find({})
+  .limit(limit *1)
+  .skip((page -1)*limit) 
+  .then(admins =>{
     res.render('manage_admins')
   })
   .catch(err =>{
     res.send('cannot found admin')
   })
+}
+module.exports.manage_admins_For_Delete =async (req, res) => {
+  const {page = 1,limit = 9} = req.query ;
+  const token = req.cookies.jwt;
+  if (token) {
+    jwt.verify(token, 'net ninja secret', async (err, decodedToken) => {
+      if (err) {
+        res.locals.super_admin = null;
+        res.status(500).json({
+          message : "You are not the specified user"
+        })
+      } else {
+        let super_admin = await Super_Admin.findById(decodedToken.id);
+        Super_Admin.findOne({email : super_admin.email})
+        .then(sup_admin=>{
+          if(sup_admin!=null){
+              Admin.find({})
+              .limit(limit *1)
+              .skip((page -1)*limit)
+              .then(admins =>{
+                res.render('manage_admins',{admins:admins,super_admin : sup_admin})
+              })
+              .catch(err =>{
+                res.send('cannot found admin')
+              })
+          }
+        })
+      }
+    })
+  }
+
 }
 
 module.exports.delete_store =async (req, res) => {
@@ -482,12 +529,28 @@ module.exports.delete_store =async (req, res) => {
 
 }
 module.exports.get_update_store =async (req, res) => {
-  Store.findOne({_id : req.params.id}).then(store =>{
+  const token = req.cookies.jwt;
 
-    res.render('update_store',{store : store})
-  }).catch(err =>{
-    res.send('Some error occured')
-  })
+  if (token) {
+    jwt.verify(token, 'net ninja secret', async (err, decodedToken) => {
+      if (err) {
+  
+          res.render('Login-super')
+
+      } else {
+        let admin = await Admin.findById(decodedToken.id);
+        Store.findOne({_id : req.params.id}).then(store =>{
+      
+          res.render('update_store',{store : store,admin:admin})
+        }).catch(err =>{
+          res.send('Some error occured')
+        })
+      }
+    })
+  }else{
+    res.render('Login-super')
+  }
+       
 }
 module.exports.update_store =async (req, res) => {
   const token = req.cookies.jwt;
@@ -527,12 +590,29 @@ module.exports.update_store =async (req, res) => {
 }
 
 module.exports.get_update_products =async (req, res) => {
-  Prodcut.findOne({_id : req.params.id}).then(product =>{
+  const token = req.cookies.jwt;
 
-    res.render('update_products',{product : product})
-  }).catch(err =>{
-    res.send('Some error occured')
+  jwt.verify(token, 'net ninja secret', async (err, decodedToken) => {
+    if (err) {
+      res.locals.admin = null;
+      res.render('Login-super')
+    } else {
+      let admin = await Admin.findById(decodedToken.id);
+      Store.findOne({id_admin : admin._id}).then(store =>{
+        
+        Prodcut.findOne({_id :  mongoose.Types.ObjectId(req.params.id)}).then(product =>{
+  
+          res.render('update_products',{product : product,admin : admin,store : store})
+        }).catch(err =>{
+          res.send('Some error occured')
+        })
+
+      })
+
+    }
   })
+
+  
 }
 module.exports.post_update_products =async (req, res) => {
   const token = req.cookies.jwt;
@@ -569,7 +649,10 @@ module.exports.post_update_products =async (req, res) => {
                       if(k== inv[i].id_products.length-1){
                           // make it into condition
                           // res.render('products',{tab_products: tab_products}) 
-                          res.render("products",{tab_products : tab_products,id : req.params.id,admin : admin},)
+                          Store.findOne({id_admin : admin._id}).then(store =>{
+                            res.render("products",{tab_products : tab_products,id : req.params.id,admin : admin,store : store},)
+                          })
+                          
                          
                       }
                       
@@ -593,6 +676,7 @@ module.exports.post_update_products =async (req, res) => {
   }
 }
 const { ObjectId } = require('mongodb');
+const Super_Admin = require("../models/Super_Admin");
 
 module.exports.get_delete_products =async (req, res) => {
   
@@ -868,7 +952,7 @@ module.exports.get_caissier =async (req, res) => {
        
         var caissiers = []
         if(store.id_caisseier.length == 0)
-              res.render('caissiers',{caissiers :caissiers,admin:admin,store:store})
+              res.render('caissiers',{caissiers :[],admin:admin,store:store})
         else {
           for (let i=0;i<store.id_caisseier.length;i++){
             Caissier.findOne({_id :store.id_caisseier[i]})
@@ -948,50 +1032,166 @@ module.exports.addCaissier =async (req, res) => {
         res.render('Login-super')
       } else{
       let admin = await Admin.findById(decodedToken.id);
-      Store.findOne({_id :  mongoose.Types.ObjectId(req.params.id)})
 
+      Store.findOne({_id :  mongoose.Types.ObjectId(req.params.id)})
       .then(store =>{
-        var caisses = []
+        len_caisse = store.id_caisse.length  ; 
+        len_caisseier = store.id_caisseier.length  ; 
+        len_history = store.id_history.length  ; 
+        var caisses = [] ; 
         var caissiers = []
-        if(store.id_caisse.length == 0)
-              res.render('caisses',{store :store ,caisses : caisses,admin:admin})
-        else {
-          for (let i=0;i<store.id_caisse.length;i++){
-            Caisse.findOne({_id :store.id_caisse[i]})
-            .then(caisse=>{
-              caisses.push(caisse);
-              if(i==store.id_caisse.length -1){
-                for (let i=0;i<store.id_caisseier.length;i++){
+        if(len_caisse ==0 && len_caisseier==0 && len_history == 0){
+          res.render('caisses',{store :store ,caisses : [],caissiers : [],admin:admin,nbcomptes : 0,som : 0  ,tiket :0 ,actif_hours : 0})
+        }else if(len_caisse !=0 && len_caisseier !=0 && len_history !=0){
+          
+            // if all exist
+            // search for caisseiers
+              for (let i=0;i<store.id_caisseier.length;i++){
                   Caissier.findOne({_id :store.id_caisseier[i]})
                   .then(caissier=>{
                     caissiers.push(caissier);
-                    if(i==store.id_caisseier.length -1){
-                      Historie.findOne({id_store :  req.params.id})
-                      .then(hist =>{
-                        console.log("hist = "+hist)
-                        var som = 0
-                        for(let a = 0;a<hist.history.length;a++){
-                          
-                            som+=parseInt(hist.history[a].total);
-                        } 
-                        res.render('caisses',{tiket :hist.history.length, som : som,store :store ,caisses : caisses,admin:admin,nbcomptes : store.id_caisseier.length,caissiers : caissiers})
+                  })
+                  if(i == store.id_caisseier.length-1){
+                    for (let i=0;i<store.id_caisse.length;i++){
+                      Caisse.findOne({_id :store.id_caisse[i]})
+                      .then(caisse=>{
+                        caisses.push(caisse)
+                        if(i == store.id_caisse.length-1){
+                          var som = 0 ;
+                          for (let j=0;j<store.id_history.length;j++){
+                            Historie.findOne({_id :store.id_history[j]})
+                            .then(history=>{
+                               
+                                for (let k=0;k<history.history.length;k++){
+                                  som +=  parseInt(history.history[k].total)  ;
+                                  if(k == history.history.length-1)
+                                      res.render('caisses',{store :store ,caisses : caisses,caissiers : caissiers,admin:admin,nbcomptes : store.id_caisseier.length,som : som,tiket :history.history.length,actif_hours : 0 }) 
+      
+                                }
+                                          
+                            })
+                          }
+                        }
+                    })
+                  }
+                    
+                }
+              }// find all caissiers
+              // inventory does not exist
+          }else if(len_caisseier !=0 && len_history ==0 && len_caisse == 0){
+            for (let i=0;i<store.id_caisseier.length;i++){
+                Caissier.findOne({_id :store.id_caisseier[i]})
+                .then(caissier=>{
+                  caissiers.push(caissier);
+                  if(i == store.id_caisseier.length-1){
 
-                      })
-
+                          res.render('caisses',{store :store ,caisses : caisses,caissiers : caissiers,admin:admin,nbcomptes : caissiers.length,som : 0  ,tiket :0,actif_hours : 0 })
+    
+                      
+                     
                     }
                   })
                 }
-              }
-                // res.render('caisses',{store :store ,caisses : caisses,admin:admin,nbcomptes : store.id_caisseier.length})
-            })
+                
+               
+          }// find all caissiers
+            // res.render('caisses',{store :store ,caisses : caisses,caissiers : [],admin:admin,nbcomptes : 0,som : 0  ,tiket :0 })
+          else if(len_caisse !=0 && len_history ==0 && len_caisseier ==0){
+            for(let j = 0;j<store.id_caisse.length;j++){
+                  Caisse.findOne({_id :store.id_caisse[j]})
+                  .then(caisse=>{
+                    caisses.push(caisse)
+                    if(j == store.id_caisse.length-1){  
+                         res.render('caisses',{store :store ,caisses : caisses,caissiers : [],admin:admin,nbcomptes : 0,som : 0  ,tiket :0,actif_hours : 0 })
+
+                    }
+                  })
+           
+            }
           }
-        }
-       
+          else if(len_caisse !=0 && len_caisseier !=0 && len_history ==0){
+           // if all exist
+            // search for caisseiers
+            for (let i=0;i<store.id_caisseier.length;i++){
+              Caissier.findOne({_id :store.id_caisseier[i]})
+              .then(caissier=>{
+                caissiers.push(caissier);
+              })
+              if(i == store.id_caisseier.length-1){
+                for (let i=0;i<store.id_caisse.length;i++){
+                  Caisse.findOne({_id :store.id_caisse[i]})
+                  .then(caisse=>{
+                    caisses.push(caisse)
+                    if(i == store.id_caisse.length-1)
+                       res.render('caisses',{store :store ,caisses : caisses,caissiers : caissiers,admin:admin,nbcomptes : store.id_caisseier.length,som : 0,tiket :0 ,actif_hours : 0})                           
+                })
+              }
+                
+            }
+          }
+          }
+          else if(len_caisse ==0 && len_caisseier !=0 && len_history !=0){
+            // if all exist
+             // search for caisseiers
+             for (let i=0;i<store.id_caisseier.length;i++){
+               Caissier.findOne({_id :store.id_caisseier[i]})
+               .then(caissier=>{
+                 caissiers.push(caissier);
+               })
+               if(i == store.id_caisseier.length-1){
+            
+                  var som = 0 ;
+                  for (let j=0;j<store.id_history.length;j++){
+                    Historie.findOne({_id :store.id_history[j]})
+                    .then(history=>{
+                       
+                        for (let k=0;k<history.history.length;k++){
+                          som +=  parseInt(history.history[k].total)  ;
+                          if(k == history.history.length-1)
+                              res.render('caisses',{store :store ,caisses : [],caissiers : caissiers,admin:admin,nbcomptes : store.id_caisseier.length,som : som,tiket :history.history.length,actif_hours : 0 }) 
+
+                        }
+                                  
+                    })
+                  
+                }
+                 
+             }
+           }
+           } else if(len_caisse !=0 && len_caisseier ==0 && len_history !=0){
+            // if all exist
+             // search for caisseiers
+             for (let i=0;i<store.id_caisse.length;i++){
+               Caisse.findOne({_id :store.id_caisse[i]})
+               .then(caisse=>{
+                console.log(caisse)
+                 caisses.push(caisse);
+               })
+               if(i == store.id_caisse.length-1){
+            
+                  
+                  for (let j=0;j<store.id_history.length;j++){
+                    Historie.findOne({_id :store.id_history[j]})
+                    .then(history=>{
+                       
+                        for (let k=0;k<history.history.length;k++){
+                          som +=  parseInt(history.history[k].total)  ;
+                          if(k == history.history.length-1)
+                              res.render('caisses',{store :store ,caisses : caisses,caissiers : [],admin:admin,nbcomptes : 0,som : som,tiket :history.history.length,actif_hours : 0 }) 
+
+                        }
+                                  
+                    })
+                  
+                }
+                 
+             }
+           }
+           }else if(len_caisse ==0 && len_caisseier ==0 && len_history !=0){
+            res.render('caisses',{store :store ,caisses : [],caissiers : [],admin:admin,nbcomptes : 0,som : 0,tiket :0,actif_hours : 0 }) 
+           }
         
         
-      })
-      .catch(err =>{
-        res.render('Login-super')
       })
     }
   })
@@ -1123,4 +1323,214 @@ module.exports.addCaissier =async (req, res) => {
     })
   }
 
+}
+module.exports.not_found = (req, res) => {
+  res.render('notfound');
+}
+
+module.exports.testP = (req, res) => {
+  const dataList = [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5'
+]
+
+function paginateArray(arr , itemPerPage , pageIndex) {
+    const lastIndex = itemPerPage * pageIndex;
+    const firstIndex = lastIndex - itemPerPage;
+    return arr.slice(firstIndex , lastIndex);
+}
+
+console.log(paginateArray(dataList , 5 , 2));
+}
+module.exports.store_track = (req, res) => {
+          // Test if super admin is authenticated 
+          const token = req.cookies.jwt;
+          if (token) {
+            jwt.verify(token, 'net ninja secret', async (err, decodedToken) => {
+              if (err) {
+                res.locals.admin = null;
+                res.render('Login')
+              } else {
+                let admin = await Admin.findById(decodedToken.id);
+    
+                // find store by id 
+                Store.find({id_admin: admin._id})
+
+                .then(store =>{
+                  res.render('store-map',{store : store,admin : admin})
+                  
+                })
+                .catch(err =>{
+                  res.render('Login-super')
+                })
+        
+              }
+            })
+          }
+          else{ 
+            res.render('Login-super')
+          }
+}
+
+module.exports.store_for_map= (req, res) => {
+    // Test if super admin is authenticated 
+    const token = req.cookies.jwt;
+    if (token) {
+      jwt.verify(token, 'net ninja secret', async (err, decodedToken) => {
+        if (err) {
+          res.locals.admin = null;
+          res.render('Login')
+        } else {
+          let admin = await Admin.findById(decodedToken.id);
+
+          // find store by id 
+          Store.find({id_admin: admin._id})
+
+          .then(store =>{
+            var positions = ""
+            for(let i=0;i<store.length;i++){
+              positions += (store[i].long+",") 
+            }
+            var p1 = positions.slice(0,-1)
+            var positions2 = ""
+            for(let i=0;i<store.length;i++){
+              positions2 += (store[i].lat+",") 
+            }
+           var p2 =  positions2.slice(0,-1)
+           var tab = [p1,p2]
+           res.send(tab)
+            
+          })
+          .catch(err =>{
+            res.send('No results')
+            // res.render('Login-super')
+          })
+  
+        }
+      })
+    }
+    else{ 
+      res.render('Login-super')
+    }
+}
+module.exports.track_caisses= (req, res) => {
+    // Test if super admin is authenticated 
+    const token = req.cookies.jwt;
+    if (token) {
+      jwt.verify(token, 'net ninja secret', async (err, decodedToken) => {
+        if (err) {
+          res.locals.admin = null;
+          res.render('Login')
+        } else {
+          let admin = await Admin.findById(decodedToken.id);
+          const {page = 1,limit = 9} = req.query ;
+          // find store by id 
+          Store.find({id_admin: admin._id})
+          .limit(limit *1)
+          .skip((page -1)*limit) 
+          .then(store =>{
+            res.render('map-caisses-forstore',{store : store,admin : admin})
+            
+          })
+          .catch(err =>{
+            res.render('Login-super')
+          })
+  
+        }
+      })
+    }
+    else{ 
+      res.render('Login-super')
+    }
+}
+
+module.exports.get_map= (req, res) => {
+  const token = req.cookies.jwt;
+  if (token) {
+    jwt.verify(token, 'net ninja secret', async (err, decodedToken) => {
+      if (err) {
+        res.locals.admin = null;
+        res.render('Login-super')
+      } else{
+      let admin = await Admin.findById(decodedToken.id);
+      Store.findOne({_id :  mongoose.Types.ObjectId(req.params.id)})
+
+      .then(store =>{
+        var caisses = []
+        if(store.id_caisse.length == 0){
+          res.send([])
+        }
+              // res.render('crud_caisses',{store :store ,caisses : caisses,admin:admin})
+        else {
+          for (let i=0;i<store.id_caisse.length;i++){
+            Caisse.findOne({_id :store.id_caisse[i]})
+            .then(caisse=>{
+              caisses.push(caisse);
+              if(i==store.id_caisse.length -1){
+                var positions = ""
+                for(let i=0;i<caisses.length;i++){
+                  positions += (caisses[i].long+",") 
+                }
+                var p1 = positions.slice(0,-1)
+                var positions2 = ""
+                for(let i=0;i<caisses.length;i++){
+                  positions2 += (caisses[i].lat+",") 
+                }
+               var p2 =  positions2.slice(0,-1)
+               var tab = [p1,p2]
+               res.send(tab)
+              }
+                // res.render('crud_caisses',{store :store ,caisses : caisses,admin:admin})
+                
+            })
+          }
+        }
+       
+        
+        
+      })
+      .catch(err =>{
+        res.render('Login-super')
+      })
+    }
+  })
+    
+}else
+    res.render('Login-super')
+}
+module.exports.show_maps= (req, res) => {
+    // Test if super admin is authenticated 
+    const token = req.cookies.jwt;
+    if (token) {
+      jwt.verify(token, 'net ninja secret', async (err, decodedToken) => {
+        if (err) {
+          res.locals.admin = null;
+          res.render('Login')
+        } else {
+          let admin = await Admin.findById(decodedToken.id);
+          // find store by id 
+          Store.find({id_admin: admin._id})
+
+          .then(store =>{
+            res.render('caiss-map',{store : store,admin : admin})
+            
+          })
+          .catch(err =>{
+            res.render('Login-super')
+          })
+  
+        }
+      })
+    }
+    else{ 
+      res.render('Login-super')
+    }
 }

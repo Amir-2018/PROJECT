@@ -18,14 +18,21 @@ const userSchema = new mongoose.Schema({
     type : String
   },
 
-  position : {
+  long : {
     type: String
+  },
+  lat : {
+    type : String
   },
  id_admin : {
   type : String
  },
  id_caisse : [String],
- id_caisseier : [String]
+ id_caisseier : [String],
+ id_history : [String],
+ actif_hours : {
+  type: String
+ }
 });
 
 const Store = mongoose.model('store', userSchema);
